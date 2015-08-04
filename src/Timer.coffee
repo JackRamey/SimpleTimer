@@ -1,8 +1,3 @@
-pad = (val, length, padChar = '0') ->
-    val += ''
-    numPads = length - val.length
-    if (numPads > 0) then new Array(numPads + 1).join(padChar) + val else val
-
 class Timer
 
     constructor: (duration) ->
@@ -51,6 +46,11 @@ class CountUpTimer extends Timer
         mSecs = (time % 100) | 0
         mSecs = pad(mSecs, 2)
         return mins + ":" + secs + "." + mSecs
+
+pad = (val, length, padChar = '0') ->
+    val += ''
+    numPads = length - val.length
+    if (numPads > 0) then new Array(numPads + 1).join(padChar) + val else val
 
 $(document).ready( ->
     console.log('ready!')
