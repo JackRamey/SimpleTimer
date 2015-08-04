@@ -1,0 +1,10 @@
+#Compiled Sources
+lib/
+
+#NodeFiles
+node_modules/
+
+#vim files
+.*.un~
+.*.swp
+
