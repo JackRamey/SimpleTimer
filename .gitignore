@@ -1,6 +1,6 @@
 #Compiled Sources
 lib/
-bin/
+js/
 
 #NodeFiles
 node_modules/
