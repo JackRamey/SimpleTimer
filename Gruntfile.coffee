@@ -12,12 +12,18 @@ module.exports = (grunt) ->
                 dest: 'lib/'
                 ext: '.js'
 
+        uglify:
+            app:
+                src: 'lib/**/*.js'
+                dest: 'js/SimpleTimer.min.js'
+
         watch:
             app:
-                files: '**/*.coffee'
-                tasks: ['coffee']
+                files: 'src/**/*.coffee'
+                tasks: ['coffee','uglify']
 
     grunt.loadNpmTasks 'grunt-contrib-coffee'
+    grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-watch'
 
     grunt.registerTask 'default', ['coffee']

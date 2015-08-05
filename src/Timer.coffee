@@ -4,17 +4,25 @@ class Timer
         @timer = 0
         @increment = 1
         @tickFns = []
+        @endFns = []
         @duration = duration
 
     onTick: (fn) ->
         @tickFns.push(fn)
 
+    onComplete: (fn) ->
+        @endFns.push(fn)
+
     run: () ->
         self = this
-        setInterval( () =>
+        iid = setInterval( () =>
             self.timer += self.increment
             for fn in @tickFns
-              fn.call(this, self)
+                fn.call(this, self)
+            if self.timer == self.duration
+                for fn in @endFns
+                    fn.call(this, self)
+                clearInterval(iid)
         , 10)
 
 class CountDownTimer extends Timer
@@ -22,7 +30,7 @@ class CountDownTimer extends Timer
     constructor: (duration) ->
         super(duration)
 
-    format: () ->
+    toString: () ->
         time = @duration - @timer
         mins = ((time / 100) / 60) | 0
         mins = pad(mins, 2)
@@ -37,7 +45,7 @@ class CountUpTimer extends Timer
     constructor: (duration) ->
         super(duration)
 
-    format: () ->
+    toString: () ->
         time = @timer
         mins = ((time / 100) / 60) | 0
         mins = pad(mins, 2)
@@ -51,18 +59,4 @@ pad = (val, length, padChar = '0') ->
     val += ''
     numPads = length - val.length
     if (numPads > 0) then new Array(numPads + 1).join(padChar) + val else val
-
-$(document).ready( ->
-    console.log('ready!')
-    x = new CountDownTimer(10000)
-    x.run()
-    x.onTick( =>
-        $('#timerX').html(x.format())
-    )
-    y = new CountUpTimer(10000)
-    y.run()
-    y.onTick( =>
-        $('#timerY').html(y.format())
-    )
-)
 
