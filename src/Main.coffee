@@ -1,23 +1,26 @@
 $(document).ready( ->
     console.log('ready!')
-    x = new CountDownTimer(300)
+    x = new CountDownTimer(3000)
     x.run()
     x.onTick( =>
         $('#timerX').html(x.toString())
     )
-    y = new CountUpTimer(300)
+    y = new CountUpTimer(3000)
     y.run()
     y.onTick( =>
         $('#timerY').html(y.toString())
+    )
+    y.onEachSecond( ->
+        console.log('tick')
     )
     y.onComplete( =>
         $('#timerY').html("IT'S OVER!")
     )
 
-    a = new CountDownTimer(300, 'a')
-    b = new CountUpTimer(400, 'b')
-    c = new CountDownTimer(500, 'c')
-    d = new CountUpTimer(600, 'd')
+    a = new CountDownTimer(3000, 'a')
+    b = new CountUpTimer(4000, 'b')
+    c = new CountDownTimer(5000, 'c')
+    d = new CountUpTimer(6000, 'd')
 
     a.onTick( =>
         $('#timerZ').html(a.toString())
