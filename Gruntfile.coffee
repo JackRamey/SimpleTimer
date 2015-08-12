@@ -2,28 +2,43 @@ module.exports = (grunt) ->
     grunt.initConfig
         pkg: grunt.file.readJSON('package.json')
 
+        clean: ['lib/']
+
         coffee:
-            app:
+            webapp:
                 expand: true
                 options:
                     bare: true
+                    join: true
+                    sourceMap: true
+                files:
+                    'build/SimpleTimer.js': ['src/**/*.coffee']
+
+            build:
+                expand: true
+                options:
+                    bare: true
+                    sourceMap: true
                 cwd: 'src'
                 src: '**/*.coffee'
-                dest: 'lib/'
+                dest: 'build/'
                 ext: '.js'
 
         uglify:
             app:
-                src: 'lib/**/*.js'
+                src: 'build/**/*.js'
                 dest: 'js/SimpleTimer.min.js'
 
         watch:
             app:
                 files: 'src/**/*.coffee'
-                tasks: ['coffee','uglify']
+                tasks: ['coffee:webapp','uglify']
 
+    grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-watch'
 
-    grunt.registerTask 'default', ['coffee']
+    grunt.registerTask 'default', ['coffee:webapp']
+    grunt.registerTask 'webapp', ['coffee:webapp']
+    grunt.registerTask 'webapp-full', ['coffee:build', 'uglify']

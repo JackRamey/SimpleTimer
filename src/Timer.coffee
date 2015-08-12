@@ -1,11 +1,12 @@
 class Timer
 
-    constructor: (duration) ->
+    constructor: (duration, id) ->
         @timer = 0
         @increment = 1
         @tickFns = []
         @endFns = []
         @duration = duration
+        @id = id
 
     onTick: (fn) ->
         @tickFns.push(fn)
@@ -15,20 +16,23 @@ class Timer
 
     run: () ->
         self = this
-        iid = setInterval( () =>
+        @interval = setInterval( () =>
             self.timer += self.increment
-            for fn in @tickFns
+            for fn in self.tickFns
                 fn.call(this, self)
             if self.timer == self.duration
-                for fn in @endFns
+                self.stop()
+                for fn in self.endFns
                     fn.call(this, self)
-                clearInterval(iid)
         , 10)
+
+    stop: () ->
+        clearInterval(@interval)
 
 class CountDownTimer extends Timer
 
-    constructor: (duration) ->
-        super(duration)
+    constructor: (duration, id) ->
+        super(duration, id)
 
     toString: () ->
         time = @duration - @timer
@@ -42,8 +46,8 @@ class CountDownTimer extends Timer
 
 class CountUpTimer extends Timer
 
-    constructor: (duration) ->
-        super(duration)
+    constructor: (duration, id) ->
+        super(duration, id)
 
     toString: () ->
         time = @timer
