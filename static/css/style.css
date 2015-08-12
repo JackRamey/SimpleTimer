@@ -1,5 +1,8 @@
 div {
     font-family: 'Roboto', sans-serif;
+}
+
+div.timer {
     font-size: 200px;
 }
 

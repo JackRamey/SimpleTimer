@@ -1,12 +1,12 @@
 $(document).ready( ->
     console.log('ready!')
+
     x = new CountDownTimer(3000)
-    x.run()
     x.onTick( =>
         $('#timerX').html(x.toString())
     )
+
     y = new CountUpTimer(3000)
-    y.run()
     y.onTick( =>
         $('#timerY').html(y.toString())
     )
@@ -50,6 +50,11 @@ $(document).ready( ->
         $('#timerZ').html("WOOHOO!")
     )
 
-    a.run()
+    $('#timerX').html( => x.toString())
+    $('#timerY').html( => y.toString())
+    $('#timerZ').html( => a.toString())
+    $('#timerX').click( => x.run())
+    $('#timerY').click( => y.run())
+    $('#timerZ').click( => a.run())
 )
 
