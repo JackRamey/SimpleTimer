@@ -21,7 +21,7 @@ class Timer
 
     #Member Methods
     doCompleteFns: () ->
-        if @timer == @duration
+        if @isComplete()
             @stop()
             for fn in @endFns
                 fn.call(this)
@@ -52,6 +52,9 @@ class Timer
     getRemainingTime: () =>
         return @duration
 
+    isComplete: () ->
+        @timer == @duration
+
     isMinute: () ->
         return @getTimerSeconds() == 0
 
@@ -70,8 +73,14 @@ class Timer
     onTick: (fn) ->
         @tickFns.push(fn)
 
+    reset: () ->
+        @stop()
+        @timer = 0
+
     run: () ->
         self = this
+        if @isComplete()
+            @reset()
         if !@interval?
             @interval = setInterval( () =>
                 self.tick()

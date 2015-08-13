@@ -6,3 +6,6 @@ div.timer {
     font-size: 200px;
 }
 
+.warn {
+    color: red;
+}

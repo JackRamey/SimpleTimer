@@ -35,7 +35,11 @@ module.exports = (grunt) ->
         watch:
             webapp:
                 files: 'src/**/*.coffee'
-                tasks: ['coffee:webapp','uglify']
+                tasks: ['coffee:webapp','uglify:webapp']
+
+            examples:
+                files: 'eamples/1/src/**/*.coffee'
+                tasks: ['coffee:examples', 'uglify:examples']
 
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -43,5 +47,5 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-watch'
 
     grunt.registerTask 'default', ['coffee:webapp']
-    grunt.registerTask 'webapp', ['coffee:webapp']
+    grunt.registerTask 'webapp', ['coffee:webapp', 'uglify:webapp']
     grunt.registerTask 'webapp-full', ['coffee', 'uglify']

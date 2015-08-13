@@ -10,7 +10,14 @@ $(document).ready( ->
     y.onTick( =>
         $('#timerY').html(y.toString())
     )
-    y.onEachSecond( ->
+    colors = ["#ff3322", "blue", "red", "green", "yellow"];
+    y.onEachSecond( =>
+        timerY = $("#timerY")
+        if timerY.hasClass('warn')
+            timerY.removeClass('warn')
+        else
+            timerY.addClass('warn')
+
         console.log('tick')
     )
     y.onComplete( =>
