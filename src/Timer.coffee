@@ -1,6 +1,6 @@
 class Timer
 
-    constructor: (duration, id) ->
+    constructor: (duration) ->
         @timer = 0
         @increment = 10
         @tickFns = []
@@ -8,7 +8,6 @@ class Timer
         @minuteFns = []
         @endFns = []
         @duration = duration
-        @id = id
 
     #Static Methods
     @getMilliSeconds: (time) ->
@@ -96,16 +95,16 @@ class Timer
 
 class CountDownTimer extends Timer
 
-    constructor: (duration, id) ->
-        super(duration, id)
+    constructor: (duration) ->
+        super(duration)
 
     getRemainingTime: () ->
         return @duration - @timer
 
 class CountUpTimer extends Timer
 
-    constructor: (duration, id) ->
-        super(duration, id)
+    constructor: (duration) ->
+        super(duration)
 
     getRemainingTime: () ->
         return @timer

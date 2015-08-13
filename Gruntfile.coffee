@@ -14,23 +14,26 @@ module.exports = (grunt) ->
                 files:
                     'build/SimpleTimer.js': ['src/**/*.coffee']
 
-            build:
+            examples:
                 expand: true
                 options:
                     bare: true
+                    join: true
                     sourceMap: true
-                cwd: 'src'
-                src: '**/*.coffee'
-                dest: 'build/'
-                ext: '.js'
+                files:
+                    'example/1/build/example1.js': ['src/**/*.coffee', 'examples/**/src/**/*.coffee']
 
         uglify:
-            app:
+            webapp:
                 src: 'build/**/*.js'
                 dest: 'js/SimpleTimer.min.js'
 
+            examples:
+                src: 'examples/1/build/example1.js'
+                dest: 'examples/1/js/example1.min.js'
+
         watch:
-            app:
+            webapp:
                 files: 'src/**/*.coffee'
                 tasks: ['coffee:webapp','uglify']
 
@@ -41,4 +44,4 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'default', ['coffee:webapp']
     grunt.registerTask 'webapp', ['coffee:webapp']
-    grunt.registerTask 'webapp-full', ['coffee:build', 'uglify']
+    grunt.registerTask 'webapp-full', ['coffee', 'uglify']
