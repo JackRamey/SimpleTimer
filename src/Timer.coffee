@@ -72,16 +72,18 @@ class Timer
 
     run: () ->
         self = this
-        @interval = setInterval( () =>
-            self.tick()
-            self.doTickFns()
-            self.doSecondFns()
-            self.doMinuteFns()
-            self.doCompleteFns()
-        , 10)
+        if !@interval?
+            @interval = setInterval( () =>
+                self.tick()
+                self.doTickFns()
+                self.doSecondFns()
+                self.doMinuteFns()
+                self.doCompleteFns()
+            , 10)
 
     stop: () ->
         clearInterval(@interval)
+        @interval = null
 
     tick: () ->
         @timer += @increment

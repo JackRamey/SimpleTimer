@@ -21,7 +21,7 @@ module.exports = (grunt) ->
                     join: true
                     sourceMap: true
                 files:
-                    'example/1/build/example1.js': ['src/**/*.coffee', 'examples/**/src/**/*.coffee']
+                    'examples/1/build/example1.js': ['src/**/*.coffee', 'examples/1/src/**/*.coffee']
 
         uglify:
             webapp:
