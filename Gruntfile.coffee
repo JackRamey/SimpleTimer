@@ -2,7 +2,9 @@ module.exports = (grunt) ->
     grunt.initConfig
         pkg: grunt.file.readJSON('package.json')
 
-        clean: ['lib/']
+        clean:
+            webapp: ['build/', 'js/']
+            examples: ['examples/1/build/','examples/1/js/']
 
         coffee:
             webapp:
