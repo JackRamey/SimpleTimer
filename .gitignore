@@ -10,3 +10,5 @@ node_modules/
 .*.un~
 .*.swp
 
+#OSX junk
+.DS_Store
