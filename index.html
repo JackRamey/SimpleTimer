@@ -2,16 +2,28 @@
 <head>
 </head>
 <body>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,900' rel='stylesheet' type='text/css'>
-    <link href='static/css/style.css' rel='stylesheet' type='text/css'>
-    <div>First timer counts down.</div>
-    <div id="timerX"></div>
-    <div>This timer counts up. Once complete, it runs a function that replaces the timer's text</div>
-    <div id="timerY"></div>
-    <div>This timer counts down, then up, then down, then up again. Once it's finally complete it runs a function that replaces the timer's text.</div>
-    <div id="timerZ"></div>
+    <!-- STYLING -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- CONTENT -->
+    <div id="creation">
+    <form class="form-inline timer-row">
+        <div class="form-group">
+        <div class="input-group">
+            <label class="sr-only" for="mins">Minutes</label>
+            <input type="text" class="form-control" id="mins" placeholder="00">
+            <div class="input-group-addon">:</div>
+            <label class="sr-only" for="secs">Seconds</label>
+            <input type="text" class="form-control" id="secs" placeholder="00">
+        </div>
+        </div>
+    </form>
+    <button id="add-row" class="btn btn-default">Add Row</button>
+    <button id="ok-button" class="btn btn-default">OK</button>
+    </div>
+    <div id="timer">00:00.00</div>
+    <!-- SCRIPTS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="js/SimpleTimer.min.js"></script>
+    <script src="build/SimpleTimer.js"></script>
 </body>
 </html>
 
