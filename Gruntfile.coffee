@@ -24,6 +24,17 @@ module.exports = (grunt) ->
                     sourceMap: true
                 files:
                     'examples/1/build/example1.js': ['src/**/*.coffee', 'examples/1/src/**/*.coffee']
+        sass:
+            webapp:
+                options:
+                    style: 'expanded'
+                files:
+                    'static/css/main.css': 'sass/main.scss'
+            build:
+                options:
+                    style: 'compressed'
+                files:
+                    'static/css/main.min.css': 'sass/main.scss'
 
         uglify:
             webapp:
@@ -36,8 +47,8 @@ module.exports = (grunt) ->
 
         watch:
             webapp:
-                files: 'src/**/*.coffee'
-                tasks: ['coffee:webapp','uglify:webapp']
+                files: ['src/**/*.coffee', 'sass/**/*.scss']
+                tasks: ['coffee:webapp','sass:webapp']
 
             examples:
                 files: 'eamples/1/src/**/*.coffee'
@@ -45,9 +56,10 @@ module.exports = (grunt) ->
 
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
+    grunt.loadNpmTasks 'grunt-contrib-sass'
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-watch'
 
     grunt.registerTask 'default', ['coffee:webapp']
-    grunt.registerTask 'webapp', ['coffee:webapp', 'uglify:webapp']
-    grunt.registerTask 'webapp-full', ['coffee', 'uglify']
+    grunt.registerTask 'webapp', ['coffee:webapp', 'sass:webapp']
+    grunt.registerTask 'build', ['coffee:webapp', 'uglify:webapp', 'sass:build']

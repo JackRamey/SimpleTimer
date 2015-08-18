@@ -4,23 +4,25 @@
 <body>
     <!-- STYLING -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Mono:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static/css/main.css">
     <!-- CONTENT -->
-    <div id="creation">
-    <form class="form-inline timer-row">
-        <div class="form-group">
-        <div class="input-group">
-            <label class="sr-only" for="mins">Minutes</label>
-            <input type="text" class="form-control" id="mins" placeholder="00">
-            <div class="input-group-addon">:</div>
-            <label class="sr-only" for="secs">Seconds</label>
-            <input type="text" class="form-control" id="secs" placeholder="00">
+    <div id="timer-wrapper">
+    <!-- TIMER EDIT-->
+    <div id="timer-edit-container">
+        <div id="left-button">Prev</div>
+        <div id="timer-edit">
+            <input type="text" id="mins" placeholder="00">
+            <input type="text" id="secs" placeholder="00">
         </div>
-        </div>
-    </form>
-    <button id="add-row" class="btn btn-default">Add Row</button>
-    <button id="ok-button" class="btn btn-default">OK</button>
+        <div id="right-button">Next</div>
     </div>
-    <div id="timer">00:00.00</div>
+    <!-- TIMER VIEW -->
+    <div id="timer-view-container">
+        <div id="timer">00:00.00</div>
+    </div>
+    </div> <!--END TIMER WRAPPER -->
+    <div id="footer-button">Go!</div>
     <!-- SCRIPTS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="build/SimpleTimer.js"></script>

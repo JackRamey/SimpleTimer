@@ -1,0 +1,81 @@
+//BUTTON OPTIONS
+$btn-size: 50px;
+$btn-bg: #DDD;
+$btn-go: green;
+$hover: 10%;
+
+//FONT OPTIONS
+$font-light: #FFF;
+$font-stack: 'Roboto Mono', sans-serif;
+
+div {
+    font-family: $font-stack;
+}
+
+#timer-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: $btn-size;
+    left: 0;
+    right: 0;
+}
+
+#timer-edit-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .button-content {
+        position: relative;
+        color: $font-light;
+        font-weight: bold;
+        width: 25px;
+        margin-top: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+#timer-edit {
+    position: absolute;
+    top: 0;
+    left: $btn-size;
+    right: $btn-size;
+}
+
+@mixin setBgColorAndHover($base-color){
+    background-color: $base-color;
+    &:hover {
+        background-color: darken($base-color, $hover);
+    }
+}
+
+%side-btn {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: $btn-size;
+    @include setBgColorAndHover($btn-bg);
+}
+
+#left-button {
+    @extend %side-btn;
+    left:0;
+}
+
+#right-button {
+    @extend %side-btn;
+    right:0;
+}
+
+#footer-button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: $btn-size;
+    @include setBgColorAndHover($btn-go);
+}
+

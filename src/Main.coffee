@@ -1,16 +1,28 @@
 $(document).ready( ->
     console.log('ready!')
-    $('#timer').hide()
 
-    addRowButton = $('#add-row')
-    okButton = $('#ok-button')
-    row = $('.timer-row').clone()
+    timerEditContainer = $('#timer-edit-container')
+    timerViewContainer = $('#timer-view-container')
 
-    addRowButton.click( =>
-        row.clone().insertBefore( addRowButton )
-    )
+    nextBtn = $('#right-button')
+    prevBtn = $('#left-button')
+    okButton = $('#footer-button')
+
+    timerViewContainer.hide()
+
     okButton.click( =>
         timers = []
+        minutes = $('#mins').val()
+        seconds = $('#secs').val()
+        duration = (minutes * 60 * 1000)
+        duration += seconds * 1000
+        timer = new CountDownTimer(duration)
+        timer.onTick( ->
+            $('#timer').html(@toString())
+        )
+        timers.push(timer)
+        ###
+        seconds = $('#secs', timerRow).val()
         timerRows = $('.timer-row')
         for timerRow in timerRows
             minutes = $('#mins', timerRow).val()
@@ -31,6 +43,9 @@ $(document).ready( ->
         console.log(timers)
         $('#creation').hide()
         $('#timer').show()
+        ###
+        timerEditContainer.hide()
+        timerViewContainer.show()
         timers[0].run()
     )
 )
