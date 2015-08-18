@@ -1,8 +1,9 @@
 //BUTTON OPTIONS
 $btn-size: 50px;
-$btn-bg: #DDD;
+$btn-bg: #AAA;
 $btn-go: green;
-$hover: 10%;
+$btn-font-wt: bold;
+$hover-darken: 10%;
 
 //FONT OPTIONS
 $font-light: #FFF;
@@ -48,8 +49,13 @@ div {
 @mixin setBgColorAndHover($base-color){
     background-color: $base-color;
     &:hover {
-        background-color: darken($base-color, $hover);
+        background-color: darken($base-color, $hover-darken);
     }
+}
+
+%btn {
+    color: $font-light;
+    font-weight: $btn-font-wt;
 }
 
 %side-btn {
@@ -61,16 +67,19 @@ div {
 }
 
 #left-button {
+    @extend %btn;
     @extend %side-btn;
     left:0;
 }
 
 #right-button {
+    @extend %btn;
     @extend %side-btn;
     right:0;
 }
 
 #footer-button {
+    @extend %btn;
     position: fixed;
     bottom: 0;
     left: 0;
