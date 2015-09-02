@@ -143,6 +143,13 @@ class TimerSequence
     insertBufferTimer: (i) ->
         buffer = new CountDownTimer(@bufferDuration)
         buffer.onTick( ->
+            ###
+            # TODO
+            # This should be fixed to not be hard coded. Should decide if it is
+            # better that each timer knows which element to modify, or if only
+            # one managing entity should know and delegate replacement of the
+            # html content to each of the timers it contains
+            ###
             $('#timer').html('BUFFER')
         )
         buffer.onComplete( =>
