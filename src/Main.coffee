@@ -1,52 +1,51 @@
+class TimerNode
+
+    constructor: (duration) ->
+        @timer = new CountDownTimer(duration)
+        @prev = null
+
 $(document).ready( ->
     console.log('ready!')
 
-    timerEditContainer = $('#timer-edit-container')
-    timerViewContainer = $('#timer-view-container')
+    $timerEdit = $("#timer-edit")
 
-    nextBtn = $('#right-button')
-    prevBtn = $('#left-button')
-    okButton = $('#footer-button')
+    $minutesEdit = $("<input>", {type:"text", class:"minutes", placeholder:"00"})
+    $secondsEdit = $("<input>", {type:"text", class:"seconds", placeholder:"00"})
+    $timerEditRowTemplate = $("<div>", {class: "timer-edit-row"})
+    $timerEditRowTemplate.append($minutesEdit).append($secondsEdit)
+    console.log($timerEditRowTemplate)
 
-    timerViewContainer.hide()
+    $timerEditContainer = $('#timer-edit-container')
+    $timerViewContainer = $('#timer-view-container')
 
-    okButton.click( =>
-        timers = []
-        minutes = $('#mins').val()
-        seconds = $('#secs').val()
-        duration = (minutes * 60 * 1000)
-        duration += seconds * 1000
-        timer = new CountDownTimer(duration)
-        timer.onTick( ->
-            $('#timer').html(@toString())
-        )
-        timers.push(timer)
-        ###
-        seconds = $('#secs', timerRow).val()
-        timerRows = $('.timer-row')
-        for timerRow in timerRows
-            minutes = $('#mins', timerRow).val()
-            seconds = $('#secs', timerRow).val()
+    $nextBtn = $('#right-button')
+    $prevBtn = $('#left-button')
+    $okButton = $('#footer-button')
+
+    $timerViewContainer.hide()
+
+    $nextBtn.click( =>
+        $timerEditRow = $timerEditRowTemplate.clone()
+        $timerEdit.append($timerEditRow)
+        console.log($timerEditRow)
+    )
+
+    $okButton.click( =>
+        timerSequence = new TimerSequence(1000)
+        $timerEditRows = $('.timer-edit-row')
+        for $timerEditRow in $timerEditRows
+            minutes = $('.minutes', $timerEditRow).val()
+            seconds = $('.seconds', $timerEditRow).val()
             duration = (minutes * 60 * 1000)
             duration += seconds * 1000
-            timers.push(new CountDownTimer(duration))
-        prev = null
-        for timer in timers
-                if prev?
-                    prev.onComplete( =>
-                        timer.run()
-                    )
-                timer.onTick( ->
-                    $('#timer').html(@toString())
-                )
-                prev = timer
-        console.log(timers)
-        $('#creation').hide()
-        $('#timer').show()
-        ###
-        timerEditContainer.hide()
-        timerViewContainer.show()
-        timers[0].run()
+            timer = new CountDownTimer(duration)
+            timer.onTick( ->
+                $('#timer').html(@toString())
+            )
+            timerSequence.add(timer)
+        $timerEditContainer.hide()
+        $timerViewContainer.show()
+        timerSequence.run()
     )
 )
 

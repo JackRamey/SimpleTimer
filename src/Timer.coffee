@@ -125,3 +125,39 @@ pad = (val, length, padChar = '0') ->
     numPads = length - val.length
     if (numPads > 0) then new Array(numPads + 1).join(padChar) + val else val
 
+
+class TimerSequence
+
+    constructor: (bufferDuration = 0) ->
+        @timers = []
+        @bufferDuration = bufferDuration
+
+    linkPreviousTimer: (i) ->
+        if @bufferDuration
+            @insertBufferTimer(i)
+        else
+            @timers[i].onComplete( =>
+                @timers[i+1]?.run()
+            )
+
+    insertBufferTimer: (i) ->
+        buffer = new CountDownTimer(@bufferDuration)
+        buffer.onTick( ->
+            $('#timer').html('BUFFER')
+        )
+        buffer.onComplete( =>
+            @timers[i+1].run()
+        )
+        @timers[i].onComplete( =>
+            buffer.run()
+        )
+
+    add: (timer) ->
+        @timers.push(timer)
+
+    run: () ->
+        for timer,i in @timers by -1
+            @linkPreviousTimer(i)
+        @timers[0].run()
+
+
