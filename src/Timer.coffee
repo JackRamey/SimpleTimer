@@ -7,6 +7,7 @@ class Timer
         @secondFns = []
         @minuteFns = []
         @endFns = []
+        @startFns = []
         @duration = duration
 
     #Static Methods
@@ -36,18 +37,23 @@ class Timer
             for fn in @secondFns
                 fn.call(this)
 
+    doStartFns: () ->
+        if @isStart()
+            for fn in @startFns
+                fn.call(this)
+
     doTickFns: () ->
         for fn in @tickFns
             fn.call(this, self)
 
     getTimerMilliSeconds: () ->
-        return Timer.getMilliSeconds(@timer)
+        return Timer.getMilliSeconds(@getRemainingTime())
 
     getTimerMinutes: () ->
-        return Timer.getMinutes(@timer)
+        return Timer.getMinutes(@getRemainingTime())
 
     getTimerSeconds: () ->
-        return Timer.getSeconds(@timer)
+        return Timer.getSeconds(@getRemainingTime())
 
     getRemainingTime: () =>
         return @duration
@@ -61,6 +67,9 @@ class Timer
     isSecond: () ->
         return @getTimerMilliSeconds() == 0
 
+    isStart: () ->
+        return @timer == 0
+
     onComplete: (fn) ->
         @endFns.push(fn)
 
@@ -69,6 +78,9 @@ class Timer
 
     onEachSecond: (fn) ->
         @secondFns.push(fn)
+
+    onStart: (fn) ->
+        @startFns.push(fn)
 
     onTick: (fn) ->
         @tickFns.push(fn)
@@ -83,6 +95,7 @@ class Timer
             @reset()
         if !@interval?
             @interval = setInterval( () =>
+                self.doStartFns()
                 self.tick()
                 self.doTickFns()
                 self.doSecondFns()
@@ -125,46 +138,72 @@ pad = (val, length, padChar = '0') ->
     numPads = length - val.length
     if (numPads > 0) then new Array(numPads + 1).join(padChar) + val else val
 
+class TimerNode
 
-class TimerSequence
+    constructor: (timer, prev=null, next=null) ->
+        @timer = timer
+        @prev = prev
+        @next = next
 
-    constructor: (bufferDuration = 0) ->
-        @timers = []
-        @bufferDuration = bufferDuration
+class TimerLinkedList
 
-    linkPreviousTimer: (i) ->
-        if @bufferDuration
-            @insertBufferTimer(i)
-        else
-            @timers[i].onComplete( =>
-                @timers[i+1]?.run()
-            )
-
-    insertBufferTimer: (i) ->
-        buffer = new CountDownTimer(@bufferDuration)
-        buffer.onTick( ->
-            ###
-            # TODO
-            # This should be fixed to not be hard coded. Should decide if it is
-            # better that each timer knows which element to modify, or if only
-            # one managing entity should know and delegate replacement of the
-            # html content to each of the timers it contains
-            ###
-            $('#timer').html('BUFFER')
-        )
-        buffer.onComplete( =>
-            @timers[i+1].run()
-        )
-        @timers[i].onComplete( =>
-            buffer.run()
-        )
+    constructor: () ->
+        @head = null
+        @tail = null
 
     add: (timer) ->
-        @timers.push(timer)
+        timerNode = new TimerNode(timer, @tail)
+        @tail?.next = timerNode
+        @tail = timerNode
+        @head ?= timerNode
+
+    isEmpty: () ->
+        return !@head?
+
+class TimerManager
+
+    constructor: (timerElement, bufferDuration=0) ->
+        @timers = new TimerLinkedList()
+        @bufferDuration = bufferDuration
+        @timerElement = timerElement
+
+    insertBufferTimer: (timer) ->
+        self = this
+        tail = @timers.tail.timer
+        bufferTimer = new CountDownTimer(@bufferDuration)
+        tail.onComplete( =>
+            bufferTimer.run()
+        )
+        bufferTimer.onComplete( =>
+            self.timerElement?.removeClass("buffer")
+            timer.run()
+        )
+        bufferTimer.onStart( =>
+            self.timerElement?.addClass("buffer")
+        )
+        bufferTimer.onTick( =>
+            self.timerElement?.html(bufferTimer.toString())
+        )
+        @timers.add(bufferTimer)
+
+    addTimer: (duration) ->
+        self = this
+        tail = @timers.tail?.timer
+        timer = new CountDownTimer(duration)
+        timer.onComplete( =>
+            self.timerElement?.removeClass("warn")
+        )
+        timer.onEachSecond( =>
+            if timer.getTimerSeconds() <= 5 && timer.isSecond()
+                self.timerElement?.addClass("warn")
+        )
+        timer.onTick( =>
+            self.timerElement?.html(timer.toString())
+        )
+        if !@timers.isEmpty() && @bufferDuration != 0
+            @insertBufferTimer(timer)
+        @timers.add(timer)
 
     run: () ->
-        for timer,i in @timers by -1
-            @linkPreviousTimer(i)
-        @timers[0].run()
-
+        @timers.head.timer.run()
 

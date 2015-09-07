@@ -88,3 +88,10 @@ div {
     @include setBgColorAndHover($btn-go);
 }
 
+.warn {
+    color: red;
+}
+
+.buffer {
+    color: blue;
+}

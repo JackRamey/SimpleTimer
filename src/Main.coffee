@@ -31,21 +31,17 @@ $(document).ready( ->
     )
 
     $okButton.click( =>
-        timerSequence = new TimerSequence(1000)
+        timerManager = new TimerManager($('#timer'),5000)
         $timerEditRows = $('.timer-edit-row')
         for $timerEditRow in $timerEditRows
             minutes = $('.minutes', $timerEditRow).val()
             seconds = $('.seconds', $timerEditRow).val()
             duration = (minutes * 60 * 1000)
             duration += seconds * 1000
-            timer = new CountDownTimer(duration)
-            timer.onTick( ->
-                $('#timer').html(@toString())
-            )
-            timerSequence.add(timer)
+            timerManager.addTimer(duration)
         $timerEditContainer.hide()
         $timerViewContainer.show()
-        timerSequence.run()
+        timerManager.run()
     )
 )
 
